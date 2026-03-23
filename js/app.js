@@ -93,6 +93,8 @@ class TutorialApp {
     // Render the right panel
     if (lesson.isCodeLesson) {
       this._renderCodePanel(lesson);
+    } else if (lesson.isERDLesson) {
+      this._renderERDPanel(lesson);
     } else {
       this._renderSQLPanel(lesson);
     }
@@ -201,6 +203,25 @@ class TutorialApp {
     }
   }
 
+
+  _renderERDPanel(lesson) {
+    const panel = document.getElementById('right-panel');
+    panel.innerHTML = `
+      <div class="erd-panel">
+        <div class="code-header">
+          <span class="lang-badge lang-erd">ERD</span>
+          <span class="code-title">${lesson.title}</span>
+        </div>
+        <div id="erd-container">${lesson.erdHTML}</div>
+      </div>
+      <div class="complete-section">
+        <button class="btn-complete ${this.completedLessons.has(lesson.id) ? 'done' : ''}" onclick="app.markComplete()">
+          ${this.completedLessons.has(lesson.id) ? '✓ Completed!' : '✔ Mark as Complete'}
+        </button>
+      </div>
+    `;
+    if (lesson.erdInit) lesson.erdInit();
+  }
   _escapeHTML(str) {
     return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   }
